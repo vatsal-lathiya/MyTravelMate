@@ -1,49 +1,14 @@
-<?php require "../DB/dbconn.php" ?>
 <?php
+require "../DB/dbconn.php";
 
 /* ===========================
-INSERT
+UPDATE by GET PARAM
 =========================== */
 
-if (isset($_POST['add_vehicle'])) {
-
-    $vehicle_type = $_POST['vehicle_type'];
-
-    $stmt = $conn->prepare("INSERT INTO tbl_vehicletype(vehicle_type) VALUES(?)");
-    $stmt->bind_param("s", $vehicle_type);
-
-    if ($stmt->execute()) {
-        header("Location: VehicleType.php");
-        exit();
-    } else {
-        die($stmt->error);
-    }
+if (isset($_POST['edit_vehicle'])) {
+    $id = $_POST['vehicle_id'];
+    header("Location:EditData.php?edit=$id");
 }
-
-
-/* ===========================
-UPDATE
-=========================== */
-
-if (isset($_POST['update_vehicle'])) {
-
-    $id = $_POST['vehicletype_id'];
-    $vehicle_type = $_POST['vehicle_type'];
-
-    $stmt = $conn->prepare("UPDATE tbl_vehicletype
-SET vehicle_type=?
-WHERE vehicletype_id=?");
-
-    $stmt->bind_param("si", $vehicle_type, $id);
-
-    if ($stmt->execute()) {
-        header("Location: VehicleType.php");
-        exit();
-    } else {
-        die($stmt->error);
-    }
-}
-
 
 /* ===========================
 DELETE
@@ -51,183 +16,106 @@ DELETE
 
 if (isset($_POST['delete_vehicle'])) {
 
-    $id = $_POST['vehicletype_id'];
+    $id = $_POST['vehicle_id'];
+    echo $id;
 
-    $stmt = $conn->prepare("DELETE FROM tbl_vehicletype
-WHERE vehicletype_id=?");
+    $stmt = $conn->prepare("DELETE FROM tbl_vehicle WHERE vehicle_id=?");
 
     $stmt->bind_param("i", $id);
 
     if ($stmt->execute()) {
-        header("Location: VehicleType.php");
+        header("Location:vehiclelist.php?delete=1");
         exit();
     } else {
         die($stmt->error);
     }
 }
 
+$sql = "SELECT
+            tbl_vehicle.vehicle_id,
+            tbl_vehicletype.vehicle_type,
+            tbl_vehicle.vehicle_name,
+            tbl_vehicle.capacity,
+            tbl_vehicle.vehicle_status
+        FROM tbl_vehicle
+        INNER JOIN tbl_vehicletype
+        ON tbl_vehicle.vehicletype_id = tbl_vehicletype.vehicletype_id
+        ORDER BY tbl_vehicle.vehicle_id ASC";
 
-/* ===========================
-FETCH ALL DATA
-=========================== */
-
-$stmt = $conn->prepare("SELECT * FROM tbl_vehicletype ORDER BY vehicletype_id ASC");
-$stmt->execute();
-
-$result = $stmt->get_result();
+$result = mysqli_query($conn, $sql);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> MTM - Vehicletype </title>
+    <title> MTM-Vehicles </title>
 </head>
 
 <body>
-    <h1> Add Vehicle Types </h1>
-    <!-- Add Vehicles    -->
-    <form method="POST">
+    <h2> Vehicles Data List </h2>
+    <a href="../Vehicles/AddVehicles.php"> Add Vehicle </a>
+    <table border="1" cellpadding="10" cellspacing="0">
 
-        <select name="vehicle_type">
+        <tr>
+            <th>ID</th>
+            <th>Vehicle Type</th>
+            <th>Vehicle Model</th>
+            <th>Capacity</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
 
-            <option value="Car">Car</option>
+        <?php while ($row = mysqli_fetch_assoc($result)) { ?>
 
-            <option value="Bus">Bus</option>
+            <tr>
 
-            <option value="Train">Train</option>
+                <td><?php echo $row['vehicle_id']; ?></td>
 
-            <option value="Airplane">Airplane</option>
+                <td><?php echo $row['vehicle_type']; ?></td>
 
-        </select>
+                <td><?php echo $row['vehicle_name']; ?></td>
 
-        <button type="submit" name="add_vehicle">
-            Add
-        </button>
+                <td><?php echo $row['capacity']; ?></td>
 
-    </form>
-    <br>
-    <h2> Update Data</h2>
-    <form method="POST">
+                <td><?php echo $row['vehicle_status']; ?></td>
 
-        <input type="hidden" name="vehicletype_id" value="1">
+                <td>
 
-        <select name="vehicle_type">
+                    <!-- Edit Button -->
+                    <form method="POST" style="display:inline;">
+                        <input type="hidden"
+                            name="vehicle_id"
+                            value="<?php echo $row['vehicle_id']; ?>">
 
-            <option value="101">Car</option>
+                        <button type="submit" name="edit_vehicle">
+                            Edit
+                        </button>
+                    </form>
 
-            <option value="Bus">Bus</option>
+                    <!-- Delete Button -->
+                    <form method="POST"
+                        style="display:inline;"
+                        onsubmit="return confirm('Are you sure you want to delete this vehicle?');">
 
-            <option value="Train">Train</option>
+                        <input type="hidden"
+                            name="vehicle_id"
+                            value="<?php echo $row['vehicle_id']; ?>">
+                        <button type="submit" name="delete_vehicle">
+                            Delete
+                        </button>
 
-            <option value="Airplane">Airplane</option>
+                    </form>
 
-        </select>
+                </td>
 
-        <button type="submit" name="update_vehicle">
-            Update
-        </button>
+            </tr>
 
-        <h3> Vehicle Types </h3>
-        <?php
-        $sql = "SELECT * FROM tbl_vehicletype ORDER BY vehicletype_id ASC";
-        $result = mysqli_query($conn, $sql);
-        ?>
+        <?php } ?>
 
-        <!DOCTYPE html>
-        <html>
-
-        <head>
-            <title>Vehicle Type List</title>
-            <style>
-                table {
-                    border-collapse: collapse;
-                    width: 50%;
-                    margin: auto;
-                    text-align: center;
-                }
-
-                table,
-                th,
-                td {
-                    border: 1px solid black;
-                    padding: 10px;
-                }
-
-                th {
-                    background: #f2f2f2;
-                }
-
-                a {
-                    text-decoration: none;
-                    padding: 5px 10px;
-                    background: blue;
-                    color: white;
-                }
-
-                .delete {
-                    background: red;
-                }
-            </style>
-        </head>
-
-        <body>
-
-            <h2 align="center">Vehicle Type List</h2>
-
-            <table>
-
-                <tr>
-                    <th>ID</th>
-                    <th>Vehicle Type</th>
-                    <th>Action</th>
-                </tr>
-
-                <?php
-
-                if (mysqli_num_rows($result) > 0) {
-
-                    while ($row = mysqli_fetch_assoc($result)) {
-
-                ?>
-
-                        <tr>
-
-                            <td><?php echo $row['vehicletype_id']; ?></td>
-
-                            <td><?php echo $row['vehicle_type']; ?></td>
-
-                            <td>
-                                <a href="EditVehicleType.php?id=<?php echo $row['vehicletype_id']; ?>">
-                                    Edit
-                                </a>
-
-                                <a class="delete"
-                                    href="DeleteVehicleType.php?id=<?php echo $row['vehicletype_id']; ?>"
-                                    onclick="return confirm('Delete this vehicle type?');">
-                                    Delete
-                                </a>
-                            </td>
-                        </tr>
-
-                    <?php
-
-                    }
-                } else {
-
-                    ?>
-
-                    <tr>
-                        <td colspan="3">No Vehicle Types Found</td>
-                    </tr>
-
-                <?php
-                }
-                ?>
-
-            </table>
-    </form>
+    </table>
 </body>
 
 </html>
