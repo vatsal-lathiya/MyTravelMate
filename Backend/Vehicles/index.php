@@ -1,5 +1,7 @@
 <?php
-require "../DB/dbconn.php";
+require "../DB/dbconn.php"; ?>
+<?php
+require "../session.php";
 
 /* ===========================
 UPDATE by GET PARAM

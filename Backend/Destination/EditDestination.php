@@ -1,4 +1,5 @@
 <?php require "../DB/dbconn.php" ?>
+<?php require("../session.php") ?>
 <!DOCTYPE html>
 <html lang="en">
 

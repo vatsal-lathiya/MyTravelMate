@@ -1,4 +1,5 @@
 <?php require("../DB/dbconn.php") ?>
+<?php require("../session.php") ?>
 <?php
 if (isset($_POST['delete_data'])) {
     $id = $_POST['delete_id'];

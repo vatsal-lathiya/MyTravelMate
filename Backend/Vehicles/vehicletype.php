@@ -1,4 +1,5 @@
 <?php require "../DB/dbconn.php" ?>
+<?php require("../session.php") ?>
 <?php
 
 // /* ===========================

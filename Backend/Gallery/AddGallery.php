@@ -1,4 +1,5 @@
 <?php require("../DB//dbconn.php") ?>
+<?php require("../session.php") ?>
 <?php
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (isset($_POST["add_data"])) {

@@ -1,4 +1,5 @@
 <?php require "../DB/dbconn.php" ?>
+<?php require("../session.php") ?>
 <!--Update Data-->
 <?php
 if (isset($_POST['update_data'])) {

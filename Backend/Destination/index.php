@@ -1,4 +1,5 @@
 <?php require "../DB/dbconn.php" ?>
+<?php require("../session.php") ?>
 <?php
 // Delete Destination Method
 if (isset($_POST["delete_data"])) {
