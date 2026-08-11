@@ -1,41 +1,47 @@
-<?php include "./DB/dbconn.php" ?>
 <?php
 session_start();
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST['adm_email'];
-    $password = $_POST['adm_psw'];
+require_once __DIR__ . '/core/config.php';
+require_once __DIR__ . '/core/dbconn.php';
 
-    if (empty($email) || empty($password)) {
-        echo "<script>
-            alert('All fields are required');
-            window.location.href='index.php';
-        </script>";
-        exit();
+$route = isset($_GET['route']) ? $_GET['route'] : 'dashboard';
+$route = rtrim($route, '/');
+
+$routes = [
+    '' => 'pages/dashboard/index.php',
+    'dashboard' => 'pages/dashboard/index.php',
+    'login' => 'pages/auth/index.php',
+    'logout' => 'pages/auth/Logout.php',
+    'landing' => 'pages/auth/landing.php',
+];
+
+$file_to_load = '';
+
+if (array_key_exists($route, $routes)) {
+    $file_to_load = __DIR__ . '/' . $routes[$route];
+} else {
+    $parts = explode('/', $route);
+    $module = strtolower($parts[0]);
+    $action = isset($parts[1]) ? $parts[1] : 'index';
+
+    $action_map = [
+        'index' => 'index.php',
+        'add' => 'Add' . ucfirst($module) . '.php',
+        'edit' => 'Edit' . ucfirst($module) . '.php',
+        'read' => 'Read' . ucfirst($module) . '.php',
+    ];
+
+    $filename = isset($action_map[$action]) ? $action_map[$action] : $action;
+    if ($module === 'states' && $action === 'index') {
+        $filename = 'States.php';
     }
 
-    $sql = "SELECT * FROM tbl_admauth WHERE adm_email='$email' AND adm_psw='$password'";
-    $result = mysqli_query($conn, $sql);
-
-    if (!$result) {
-        die("SQL Error: " . mysqli_error($conn));
-    }
-    if (mysqli_num_rows($result) == 1) {
-        $row = mysqli_fetch_assoc($result);
-        echo $row['name'];
-        $_SESSION['sess_name'] = $row['name'];
-        echo "<script> alert('Login Successful') </script>";
-        header("Location:./Dashboard");
-    } else {
-        echo "<script> alert('Admin Not Exist') </script>";
-    }
+    $file_to_load = __DIR__ . "/pages/{$module}/{$filename}";
 }
-?>
-<form action="index.php" method="post">
-    Email:
-    <input type="email" name="adm_email" id="adm_email" />
-    <br><br>
-    Password :
-    <input type="password" name="adm_psw" id="adm_psw" />
-    <br>
-    <input type="submit" name="login" value="Log In">
-</form>
+
+if (file_exists($file_to_load)) {
+    require $file_to_load;
+} else {
+    http_response_code(404);
+    echo "<h1>404 Not Found</h1>";
+    
+}
