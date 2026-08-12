@@ -1,9 +1,8 @@
-
 <?php require BASE_PATH . "/components/auth_check.php" ?>
 <?php
 if (isset($_POST['delete_data'])) {
     $id = $_POST['delete_id'];
-    $stmt = $conn->prepare('DELETE FROM tb_blogs WHERE blog_id=?');
+    $stmt = $conn->prepare('DELETE FROM tbl_blogs WHERE blog_id=?');
     if ($stmt) {
         $stmt->bind_param('i', $id);
         if ($stmt->execute()) {
@@ -27,7 +26,7 @@ if (isset($_POST['delete_data'])) {
     </header>
 
     <div class="content-body">
-        <?php if(isset($error)): ?>
+        <?php if (isset($error)): ?>
             <div style="color: var(--danger); margin-bottom: 1rem;"><?php echo $error; ?></div>
         <?php endif; ?>
 

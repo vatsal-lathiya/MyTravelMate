@@ -1,4 +1,3 @@
-
 <?php require BASE_PATH . "/components/auth_check.php" ?>
 <?php
 // Delete Destination Method
@@ -27,10 +26,10 @@ if (isset($_POST["delete_data"])) {
     </header>
 
     <div class="content-body">
-        <?php if(isset($error)): ?>
+        <?php if (isset($error)): ?>
             <div style="color: var(--danger); margin-bottom: 1rem;"><?php echo $error; ?></div>
         <?php endif; ?>
-        
+
         <div class="card">
             <div class="table-responsive">
                 <table class="table">
@@ -64,7 +63,7 @@ if (isset($_POST["delete_data"])) {
                                         <td>" . substr($row['dest_desc'], 0, 30) . "...</td>
                                         <td>{$row['state_name']}</td>
                                         <td>{$row['dest_besttime']}</td>
-                                        <td><span class='btn-sm btn-secondary' style='background: ".($row['dest_status']=='Open'?'var(--secondary)':'var(--danger)')."'>{$row['dest_status']}</span></td>
+                                        <td><span class='btn-sm btn-secondary' style='background: " . ($row['dest_status'] == 'Open' ? 'var(--secondary)' : 'var(--danger)') . "'>{$row['dest_status']}</span></td>
                                         <td>
                                             <div class='action-btns'>
                                                 <a href='" . BASE_URL . "/destination/edit?edit={$row['dest_id']}' class='btn btn-sm btn-primary'>Edit</a>

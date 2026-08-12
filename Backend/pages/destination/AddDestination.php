@@ -1,4 +1,3 @@
-
 <?php require BASE_PATH . "/components/auth_check.php" ?>
 <?php
 $msg = "";
@@ -35,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <main class="main-content">
     <header class="top-header">
-        <h1 class="page-title">Add Destination</h1>
+        <h1 class="page-title"> Add Destination </h1>
         <div>
             <a href="<?php echo BASE_URL; ?>/destination" class="btn btn-secondary">Back to List</a>
         </div>
@@ -43,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <div class="content-body">
         <div class="card" style="max-width: 800px; margin: 0 auto;">
-            <?php if($msg != "") echo "<div style='margin-bottom:1rem;'>$msg</div>"; ?>
+            <?php if ($msg != "") echo "<div style='margin-bottom:1rem;'>$msg</div>"; ?>
             <form action="" enctype="multipart/form-data" method="POST">
                 <div class="form-group">
                     <label class="form-label" for="dest_name">Destination Name</label>
@@ -60,9 +59,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <div class="form-group">
                     <label class="form-label" for="dest_state">Destination State</label>
                     <select class="form-control" name="dest_state" id="dest_state" required>
-                        <?php 
+                        <?php
                         $state_res = mysqli_query($conn, "SELECT * FROM tbl_states");
-                        while($s = mysqli_fetch_assoc($state_res)) {
+                        while ($s = mysqli_fetch_assoc($state_res)) {
                             echo "<option value='{$s['state_id']}'>{$s['state_name']}</option>";
                         }
                         ?>
