@@ -12,6 +12,10 @@ $routes = [
     'login' => 'pages/auth/index.php',
     'logout' => 'pages/auth/Logout.php',
     'landing' => 'pages/auth/landing.php',
+    'booking' => 'pages/booking/index.php',
+    'users' => 'pages/users/index.php',
+    'feedbacks' => 'pages/feedbacks/index.php',
+    'get_travel_cost.php' => 'get_travel_cost.php',
 ];
 
 $file_to_load = '';

@@ -52,8 +52,8 @@ if (isset($_POST['update_avatar'])) {
     }
 
     if (mysqli_query($conn, $query)) {
-
-        exit;
+        header("Location: " . BASE_URL . "/avatars");
+        exit();
     } else {
 
         echo 'Update Failed: ' . mysqli_error($conn);

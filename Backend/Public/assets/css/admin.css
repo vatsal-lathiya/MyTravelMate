@@ -338,3 +338,64 @@ body {
     font-weight: 700;
     color: var(--text-main);
 }
+
+  .booking-box {
+            width: 500px;
+            max-width: 95%;
+            margin: 40px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,.1);
+        }
+
+        .booking-box h2 {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        select,
+        input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .price-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f1f8f3;
+            border-radius: 8px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+        }
+
+        .total {
+            border-top: 1px solid #ccc;
+            margin-top: 10px;
+            padding-top: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .book-btn {
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px;
+            border: 0;
+            background: green;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+

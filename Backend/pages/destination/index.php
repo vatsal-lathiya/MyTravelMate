@@ -15,8 +15,7 @@ if (isset($_POST["delete_data"])) {
 }
 ?>
 <?php require BASE_PATH . "/components/header.php" ?>
-<?php require BASE_PATH . "/components/sidebar.php" ?>
-
+<?php require BASE_PATH . "/components/sidebar.php" ?>  
 <main class="main-content">
     <header class="top-header">
         <h1 class="page-title">Destinations</h1>
